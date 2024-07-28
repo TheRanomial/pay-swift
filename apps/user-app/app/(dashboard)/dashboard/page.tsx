@@ -1,7 +1,14 @@
+import { redirect } from "next/navigation";
 import { getUser } from "../../../hooks";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 
 export default async function Page() {
   const user = await getUser();
+
+  if (!user) {
+    return <div>Not signed in</div>;
+  }
 
   return (
     <div className="w-screen p-6">
@@ -16,17 +23,18 @@ export default async function Page() {
           <div className="mt-1 text-gray-900">{user.name}</div>
         </div>
         <div className="flex flex-col mb-4">
-          <label className="text-sm font-medium text-gray-700">Personal Email</label>
+          <label className="text-sm font-medium text-gray-700">
+            Personal Email
+          </label>
           <div className="mt-1 text-gray-900">{user.name}@gmail.com</div>
         </div>
         <div className="flex flex-col mb-4">
-          <label className="text-sm font-medium text-gray-700">Mobile Number</label>
+          <label className="text-sm font-medium text-gray-700">
+            Mobile Number
+          </label>
           <div className="mt-1 text-gray-900">+91 {user.number}</div>
         </div>
       </div>
     </div>
   );
 }
-
-
-

@@ -169,16 +169,22 @@ export async function getUsername(id: number) {
 
 export async function getUser() {
   const session = await getServerSession(authOptions);
-  const id = session?.user?.id as number;
+  const userid = Number(session?.user?.id);
 
-  const user = await prisma.user.findUnique({
+  if(!userid){
+    return;
+  }
+
+  const user = await prisma.user.findFirst({
     where: {
-      id: Number(id),
+      id: {
+        equals: userid,
+      },
     },
   });
 
   return {
     name: user?.name || "Unknown",
-    number: user?.number!,
+    number: user?.number || "",
   };
 }
